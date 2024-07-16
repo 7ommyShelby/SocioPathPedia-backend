@@ -1,7 +1,9 @@
 const usermodel = require('../model/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const jwtkey = "MySecretKey"
+require("dotenv").config()
+const jwtkey = process.env.JWT_KEY
+
 
 const register = async (req, res) => {
 

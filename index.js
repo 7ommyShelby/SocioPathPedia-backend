@@ -17,7 +17,7 @@ const { createPost } = require('./controllers/post');
 const { register } = require('./controllers/auth');
 
 
-const port = 10000;
+const port = process.env.PORT;
 
 // config
 
@@ -46,7 +46,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({  storage })
 
-mongoose.connect('mongodb://localhost:27017/socioapp')
+mongoose.connect(process.env.MONGOOSE_KEY)
     .then(() => {
         console.log('server connected to database');
     })

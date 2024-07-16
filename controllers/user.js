@@ -24,7 +24,7 @@ const getfriends = async (req, res) => {
         const user = await usermodel.findById(id);
 
         const friends = await Promise.all(
-            user.friends.map((id) => usermodel.findById(id))
+            user?.friends?.map((id) => usermodel.findById(id))
         )
 
         const friendsdata = friends.map((e) => {
@@ -83,7 +83,8 @@ const addremovefriends = async (req, res) => {
         })
 
         res.json(friendsdata)
-
+        // res.json(friends)
+        
     } catch (error) {
         console.log("something went wrong at updating friendslist", error.message);
         res.status(404).json({
