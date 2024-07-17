@@ -28,8 +28,8 @@ app.use(morgan('common'));
 app.use(bodyparser.json({ limit: '30mb', extended: true }));
 app.use(bodyparser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
-app.use( express.static('public/assets'))
-
+// app.use(express.static('public/assets'))
+app.use('/images', express.static(path.join(__dirname, 'public/assets')))
 
 
 //file storage
@@ -44,7 +44,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({  storage })
+const upload = multer({ storage })
 
 mongoose.connect(process.env.MONGOOSE_KEY)
     .then(() => {

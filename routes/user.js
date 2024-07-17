@@ -6,7 +6,7 @@ const { getuser, getfriends, addremovefriends, getall } = require('../controller
 
 router.get('/details/:id', getuser)
 router.get('/:id/friends', getfriends)
-router.get('/users', getall)
+router.get('/listusers', getall)
 router.patch('/:id/:friendId/updatefriends', addremovefriends)
 
 module.exports = router
