@@ -36,7 +36,7 @@ const createPost = async (req, res) => {
 
 const getfeedPost = async (req, res) => {
     try {
-        const post = await postmodel.find()
+        const post = await postmodel.find().sort({ createdAt: -1 })
         res.json(post)
     } catch (error) {
         console.log("something went wrong at getting newsfeed", error.message);
