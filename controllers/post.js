@@ -6,8 +6,7 @@ const createPost = async (req, res) => {
     try {
 
         const { userid, description, picturePath } = req.body;
-
-
+        // console.log(req.file);
         const user = await usermodel.findById(userid);
 
         const newpost = new postmodel({
@@ -15,7 +14,7 @@ const createPost = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             description,
-            picturePath,
+            picturePath: req.file.path,
             location: user.location,
             userPicturePath: user.picturePath,
             likes: {},
