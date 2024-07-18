@@ -7,6 +7,8 @@ const createPost = async (req, res) => {
 
         const { userid, description, picturePath } = req.body;
 
+        console.log(req.file);
+
         const user = await usermodel.findById(userid);
 
         const newpost = new postmodel({
@@ -14,7 +16,7 @@ const createPost = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             description,
-            picturePath : req.file.path,
+            picturePath: req.file.path,
             location: user.location,
             userPicturePath: user.picturePath,
             likes: {},
@@ -23,8 +25,8 @@ const createPost = async (req, res) => {
 
         await newpost.save()
 
-        const post = await postmodel.find()
-
+        const post = await postmodel.find().sort({ createdAt: -1 })
+        // console.log(post);
         res.json(post)
 
     } catch (error) {
