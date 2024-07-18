@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require("dotenv").config()
 const jwtkey = process.env.JWT_KEY
-
+// const cloudinary = require('cloudinary').v2
 
 const register = async (req, res) => {
 
@@ -11,10 +11,19 @@ const register = async (req, res) => {
 
         const { firstName, lastName, email, password, picturePath, friends, location, occupation } = req.body
 
-        console.log(picturePath);
+        console.log(req.body, 'body');
+        console.log(req.file, 'files');
+        // console.log(password, 'password');
 
         const salt = await bcrypt.genSaltSync(10)
         const passwordhash = await bcrypt.hashSync(password, salt)
+
+        // if (req.files.picture) {
+        //     const uploadResult = await cloudinary.uploader
+        //         .upload_stream((result) => console.log(result)
+        //         ).end(req.files.picture.data)
+        //     console.log(uploadResult, 'uploadresuklt');
+        // }
 
         const user = new usermodel({
             firstName,
@@ -26,7 +35,7 @@ const register = async (req, res) => {
             location,
             friends,
             occupation,
-            picturePath
+            picturePath : req.file.path,
         })
 
         const savedUser = await user.save()
@@ -43,7 +52,6 @@ const register = async (req, res) => {
             message: "Something went wrong at register" + error.message
         })
     }
-
 
 }
 

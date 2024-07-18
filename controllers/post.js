@@ -1,5 +1,6 @@
 const postmodel = require('../model/post');
 const usermodel = require('../model/User');
+// const cloudinary = require('cloudinary').v2
 
 const createPost = async (req, res) => {
     try {
@@ -13,7 +14,7 @@ const createPost = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             description,
-            picturePath,
+            picturePath : req.file.path,
             location: user.location,
             userPicturePath: user.picturePath,
             likes: {},
