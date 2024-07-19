@@ -5,8 +5,12 @@ const usermodel = require('../model/User');
 const createPost = async (req, res) => {
     try {
 
-        const { userid, description, picturePath } = req.body;
+        const { userid, description } = req.body;
+
         console.log(req.file, 'file');
+
+        const picturePath = req.file ? req.file.path : null;
+
         const user = await usermodel.findById(userid);
 
         const newpost = new postmodel({

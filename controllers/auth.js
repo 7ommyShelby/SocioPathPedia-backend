@@ -11,8 +11,11 @@ const register = async (req, res) => {
 
         const { firstName, lastName, email, password, picturePath, friends, location, occupation } = req.body
 
+        const result = await cloudinary.uploader.upload(req.file.path);
+
         console.log(req.body, 'body');
         console.log(req.file, 'files');
+        console.log(result, "result");
         // console.log(password, 'password');
 
         const salt = await bcrypt.genSaltSync(10)
@@ -35,7 +38,7 @@ const register = async (req, res) => {
             location,
             friends,
             occupation,
-            picturePath : req.file.path,
+            picturePath: req.file.path,
         })
 
         const savedUser = await user.save()
