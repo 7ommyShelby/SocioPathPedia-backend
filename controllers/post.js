@@ -6,8 +6,11 @@ const createPost = async (req, res) => {
     try {
 
         const { userid, description } = req.body;
-
+        // const result = await cloudinary.uploader.upload(req.file.path);
         console.log(req.file, 'file');
+        // console.log(req.body, 'body');
+        // console.log(result);
+        
 
         const picturePath = req.file ? req.file.path : null;
 
