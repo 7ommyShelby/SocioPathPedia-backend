@@ -5,16 +5,11 @@ const usermodel = require('../model/User');
 const createPost = async (req, res) => {
     try {
 
-        console.log("userIDand ----------------", req.user);
         const { id } = req.user;
-
-        console.log("userid", req.user.id);
         const { description } = req.body;
         console.log(req.body);
-        // const result = await cloudinary.uploader.upload(req.file.path);
+
         console.log(req.file, 'file');
-        // console.log(req.body, 'body');
-        // console.log(result);
 
 
         const picturePath = req.file ? req.file.path : null;
@@ -75,6 +70,7 @@ const getUserPost = async (req, res) => {
     }
 }
 const LikePost = async (req, res) => {
+
     try {
 
         const { id } = req.params;
@@ -101,13 +97,43 @@ const LikePost = async (req, res) => {
         })
     }
 }
+const commentpost = async (req, res) => {
 
+    try {
+
+        const { id, picturePath, firstName, lastName } = req.user;
+        const { postId, comment } = req.body;
+
+        const post = await postmodel.findById(postId)
+
+        const usercomment = { userid: id, text: comment, picturePath, name : `${firstName + " "+ lastName}` }
+
+        console.log(post);
+
+        post.comments.push(usercomment)
+        // const updatepost = await postmodel.findById(postid)
+        await post.save()
+
+        res.json({
+            message: "Comment Added Successfully",
+            post
+        })
+
+
+    } catch (error) {
+        console.log("something went wrong at commentpost", error.message);
+        res.status(404).json({
+            message: "something went wrong at commentpost" + error.message
+        })
+    }
+}
 
 const postcontroller = {
     createPost,
     getfeedPost,
     getUserPost,
-    LikePost
+    LikePost,
+    commentpost
 }
 
 module.exports = postcontroller
