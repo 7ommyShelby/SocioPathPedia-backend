@@ -5,19 +5,24 @@ const usermodel = require('../model/User');
 const createPost = async (req, res) => {
     try {
 
-        const { userid, description } = req.body;
+        console.log("userIDand ----------------", req.user);
+        const { id } = req.user;
+
+        console.log("userid", req.user.id);
+        const { description } = req.body;
+        console.log(req.body);
         // const result = await cloudinary.uploader.upload(req.file.path);
         console.log(req.file, 'file');
         // console.log(req.body, 'body');
         // console.log(result);
-        
+
 
         const picturePath = req.file ? req.file.path : null;
 
-        const user = await usermodel.findById(userid);
+        const user = await usermodel.findById(id);
 
         const newpost = new postmodel({
-            userid,
+            userid: id,
             firstName: user.firstName,
             lastName: user.lastName,
             description,
@@ -58,7 +63,7 @@ const getUserPost = async (req, res) => {
     try {
         const { userid } = req.params
 
-        const userposts = await postmodel.find({ userid })
+        const userposts = await postmodel.find({ userid }).sort({ createdAt: -1 })
 
         res.json(userposts)
 
