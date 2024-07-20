@@ -101,14 +101,16 @@ const commentpost = async (req, res) => {
 
     try {
 
-        const { id, picturePath, firstName, lastName } = req.user;
+        const { id } = req.user;
         const { postId, comment } = req.body;
 
         const post = await postmodel.findById(postId)
+        const loggeduser = await usermodel.findById(id)
 
-        const usercomment = { userid: id, text: comment, picturePath, name : `${firstName + " "+ lastName}` }
+        const usercomment = { userid: id, text: comment, user: { name: `${loggeduser.firstName + " " + loggeduser.lastName}`, profile : loggeduser.picturePath }, }
 
-        console.log(post);
+        // console.log("current post", post);
+        // console.log("Current user", loggeduser);
 
         post.comments.push(usercomment)
         // const updatepost = await postmodel.findById(postid)
