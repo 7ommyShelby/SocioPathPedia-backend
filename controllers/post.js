@@ -107,7 +107,7 @@ const commentpost = async (req, res) => {
         const post = await postmodel.findById(postId)
         const loggeduser = await usermodel.findById(id)
 
-        const usercomment = { userid: id, text: comment, user: { name: `${loggeduser.firstName + " " + loggeduser.lastName}`, profile : loggeduser.picturePath }, }
+        const usercomment = { userid: id, text: comment, user: { name: `${loggeduser.firstName + " " + loggeduser.lastName}`, profile: loggeduser.picturePath }, }
 
         // console.log("current post", post);
         // console.log("Current user", loggeduser);
@@ -129,13 +129,43 @@ const commentpost = async (req, res) => {
         })
     }
 }
+const deletepost = async (req, res) => {
+    try {
+        const { id } = req.user;
+        const { postId } = req.params;
+
+        const post = await postmodel.findById(postId)
+
+        console.log(post, id);
+
+        if (post.userid !== id) {
+            return res.status(400).json({
+                message: "Invalid Operation"
+            })
+        }
+
+        await postmodel.findByIdAndDelete(postId)
+
+        res.json({
+            message: "post deleted successfully",
+            data: post
+        })
+
+    } catch (error) {
+        console.log("something went wrong at delete post", error.message);
+        res.status(404).json({
+            message: "something went wrong at delete post" + error.message
+        })
+    }
+}
 
 const postcontroller = {
     createPost,
     getfeedPost,
     getUserPost,
     LikePost,
-    commentpost
+    commentpost,
+    deletepost
 }
 
 module.exports = postcontroller
