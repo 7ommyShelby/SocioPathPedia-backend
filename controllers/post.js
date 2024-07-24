@@ -153,7 +153,7 @@ const deletepost = async (req, res) => {
 
     } catch (error) {
         console.log("something went wrong at delete post", error.message);
-        res.status(404).json({
+        res.status(404).json({  
             message: "something went wrong at delete post" + error.message
         })
     }

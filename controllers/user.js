@@ -1,4 +1,5 @@
 const usermodel = require("../model/User");
+const bcrypt = require('bcrypt')
 
 const getuser = async (req, res) => {
 
@@ -111,11 +112,57 @@ const getall = async (req, res) => {
     }
 }
 
+const updateuser = async (req, res) => {
+
+    try {
+        const { firstName, lastName, password, occupation, location } = req.body;
+
+        const { id } = req.user
+
+        const user = await usermodel.findById(id)
+
+        if (!user) {
+            return res.status(400).json({
+                message: " Login into your account,  Hacker nahi ho!"
+            })
+        }
+
+        if (password) {
+            const salt = bcrypt.genSaltSync(10);
+            const hashpass = bcrypt.hashSync(password, salt);
+            user.password = hashpass
+        }
+
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
+        if (occupation) user.occupation = occupation;
+        if (location) user.location = location;
+        if (req.file) user.picturePath = req.file.path;
+
+        // await usermodel.create(user)
+        const updateduser = await user.save()
+
+        console.log("update", updateduser);
+
+        res.json({
+            message: "Profile updated Successfully",
+            user: updateduser
+        })
+
+    } catch (error) {
+        console.log("something went wrong at updating user", error);
+        res.status(404).json({
+            message: "something went wrong at updating user" + error.message
+        })
+    }
+}
+
 const usercontroller = {
     getuser,
     getfriends,
     addremovefriends,
-    getall
+    getall,
+    updateuser
 }
 
 module.exports = usercontroller
