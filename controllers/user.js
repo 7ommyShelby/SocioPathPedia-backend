@@ -115,12 +115,17 @@ const getall = async (req, res) => {
 const updateuser = async (req, res) => {
 
     try {
+
         const { firstName, lastName, password, occupation, location } = req.body;
 
+        console.log("body--------", req.body);
+        console.log(req.user);
         const { id } = req.user
 
         const user = await usermodel.findById(id)
 
+        console.log(user);
+        
         if (!user) {
             return res.status(400).json({
                 message: " Login into your account,  Hacker nahi ho!"
@@ -142,7 +147,7 @@ const updateuser = async (req, res) => {
         // await usermodel.create(user)
         const updateduser = await user.save()
 
-        console.log("update", updateduser);
+        //console.log("update", updateduser);
 
         res.json({
             message: "Profile updated Successfully",

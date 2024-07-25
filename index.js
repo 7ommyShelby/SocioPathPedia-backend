@@ -18,6 +18,7 @@ const { register } = require('./controllers/auth');
 const cloudinary = require('cloudinary').v2
 const fileUpload = require('express-fileupload');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const { updateuser } = require('./controllers/user');
 
 
 const port = process.env.PORT;
@@ -32,7 +33,7 @@ app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // app.use(express.static('public/assets'))
-app.use('/images', express.static(path.join(__dirname, 'public/assets')))
+app.use('/images', express.static(path.join(__dirname, 'public/assets')));
 
 
 //file storage
@@ -76,12 +77,13 @@ mongoose.connect(process.env.MONGOOSE_KEY)
 
 app.post('/api/user/register', upload.single('picture'), register)
 app.post('/api/createpost', validator, upload.single('picture'), createPost)
+app.put('/api/user/update', validator, upload.single('picture'), updateuser)
 
 // app.post('/api/user/register', fileUpload(), register)
 // app.post('/api/createpost', validator,  createPost)
 
-
 // user router
+
 app.use('/api/user', userauthrouter)
 app.use('/api/user', validator, userrouter)
 app.use('/api', validator, postrouter)
