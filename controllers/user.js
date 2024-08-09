@@ -118,14 +118,15 @@ const updateuser = async (req, res) => {
 
         const { firstName, lastName, password, occupation, location } = req.body;
 
-        console.log("body--------", req.body);
-        console.log(req.user);
+        // console.log("body--------", req.body);
+        console.log(req.file);
+
         const { id } = req.user
 
         const user = await usermodel.findById(id)
 
         console.log(user);
-        
+
         if (!user) {
             return res.status(400).json({
                 message: " Login into your account,  Hacker nahi ho!"
@@ -142,7 +143,7 @@ const updateuser = async (req, res) => {
         if (lastName) user.lastName = lastName;
         if (occupation) user.occupation = occupation;
         if (location) user.location = location;
-        if (req.file) user.picturePath = req.file.path;
+        if (req.file) user.picturePath = req.file.path
 
         // await usermodel.create(user)
         const updateduser = await user.save()

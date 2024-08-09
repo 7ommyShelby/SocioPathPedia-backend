@@ -9,8 +9,7 @@ const createPost = async (req, res) => {
         const { description } = req.body;
         console.log(req.body);
 
-        console.log(req.file, 'file');
-
+        // console.log(req.file, 'file');
 
         const picturePath = req.file ? req.file.path : null;
 
